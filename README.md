@@ -70,6 +70,10 @@ cargo install --path .
 | `Esc` | Close popup / cancel |
 | `Ctrl+C` | Quit |
 
+## Disclaimer
+
+HamTUI is an independent, unofficial project and is not affiliated with, endorsed by, or associated with GoTo Group, Inc. (formerly LogMeIn, Inc.). "Hamachi" is a trademark of GoTo Group, Inc.
+
 ## License
 
 MIT
