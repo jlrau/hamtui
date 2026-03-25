@@ -28,6 +28,7 @@ async fn main() -> Result<()> {
 
         let event = event_handler.next().await?;
         app.handle_event(event).await;
+        app.poll_command_result().await;
 
         if app.should_quit {
             break;

@@ -76,15 +76,46 @@ pub async fn run_command(args: &[&str]) -> HamachiResult {
             } else {
                 format!("{}\n{}", stdout, stderr)
             };
+            let trimmed = combined.trim().to_string();
+            let success = output.status.success() && !trimmed.contains(".. failed");
+            let output = if !success {
+                extract_error_reason(&trimmed)
+            } else {
+                trimmed
+            };
             HamachiResult {
-                success: output.status.success(),
-                output: combined.trim().to_string(),
+                success,
+                output,
             }
         }
         Err(e) => HamachiResult {
             success: false,
             output: format!("Failed to run hamachi: {}", e),
         },
+    }
+}
+
+/// Extract the human-readable reason from hamachi's output.
+/// e.g. "Creating test123 .. failed, network name is already taken"
+///   -> "Network name is already taken"
+fn extract_error_reason(output: &str) -> String {
+    if let Some(pos) = output.find(".. failed, ") {
+        let reason = &output[pos + ".. failed, ".len()..];
+        let reason = reason.trim();
+        if reason.is_empty() {
+            return output.to_string();
+        }
+        // Capitalize first letter
+        let mut chars = reason.chars();
+        match chars.next() {
+            Some(c) => format!("{}{}", c.to_uppercase(), chars.as_str()),
+            None => output.to_string(),
+        }
+    } else if output.contains(".. failed") {
+        // ".. failed" with no comma/reason
+        output.to_string()
+    } else {
+        output.to_string()
     }
 }
 
@@ -137,11 +168,8 @@ pub async fn create_network(name: &str, password: &str) -> HamachiResult {
 }
 
 pub async fn join_network(name: &str, password: &str) -> HamachiResult {
-    if password.is_empty() {
-        run_command(&["join", name]).await
-    } else {
-        run_command(&["join", name, password]).await
-    }
+    // Always pass password arg to avoid interactive prompt that hangs
+    run_command(&["join", name, password]).await
 }
 
 pub async fn leave_network(name: &str) -> HamachiResult {
@@ -675,5 +703,31 @@ mod tests {
         let output = "  address    : 25.10.20.30";
         let s = parse_status(output);
         assert_eq!(s.address, "25.10.20.30");
+    }
+
+    // ===== extract_error_reason tests =====
+
+    #[test]
+    fn extract_reason_from_failed_output() {
+        let output = "Creating test123 .. failed, network name is already taken";
+        assert_eq!(extract_error_reason(output), "Network name is already taken");
+    }
+
+    #[test]
+    fn extract_reason_invalid_password() {
+        let output = "Joining 420-656-988 .. failed, invalid password";
+        assert_eq!(extract_error_reason(output), "Invalid password");
+    }
+
+    #[test]
+    fn extract_reason_no_comma() {
+        let output = "Joining 420-656-988 .. failed";
+        assert_eq!(extract_error_reason(output), output);
+    }
+
+    #[test]
+    fn extract_reason_no_failed() {
+        let output = "Some other error message";
+        assert_eq!(extract_error_reason(output), output);
     }
 }
