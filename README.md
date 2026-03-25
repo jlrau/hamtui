@@ -1,9 +1,9 @@
-# Hamachi-TUI
+# HamTUI
 
 A terminal user interface for managing [LogMeIn Hamachi](https://vpn.net) VPN networks on Linux.
 
 ```
-┌ Hamachi-TUI ──────────────────────────┐
+┌ HamTUI ──────────────────────────────┐
 │ ● Online │ 25.12.34.56 │ 123-456-789 │
 │ ▸ alex            [Logout]     [Quit] │
 ├ Networks (2) ─────────────────────────┤
@@ -46,12 +46,12 @@ See [vpn.net](https://vpn.net) for installation on other distros.
 
 ```sh
 # Build from source
-git clone https://github.com/yourusername/hamachi-tui.git
-cd hamachi-tui
+git clone https://github.com/jlrau/hamtui.git
+cd hamtui
 cargo build --release
 
 # Run
-./target/release/hamachi-tui
+./target/release/hamtui
 
 # Or install via cargo
 cargo install --path .

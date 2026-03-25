@@ -46,7 +46,7 @@ fn render_hamachi_box(frame: &mut Frame, app: &App, area: Rect) {
         .borders(Borders::ALL)
         .border_style(Style::default().fg(border_color))
         .title(Span::styled(
-            " Hamachi-TUI ",
+            " HamTUI ",
             Style::default().fg(CYAN).add_modifier(Modifier::BOLD),
         ));
 

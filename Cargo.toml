@@ -1,11 +1,11 @@
 [package]
-name = "hamachi-tui"
+name = "hamtui"
 version = "0.1.0"
 edition = "2024"
 authors = ["Jonathon Rau"]
 description = "A terminal user interface for managing Hamachi VPN networks on Linux"
 license = "MIT"
-repository = "https://github.com/jlrau/hamachi-tui"
+repository = "https://github.com/jlrau/hamtui"
 keywords = ["hamachi", "vpn", "tui", "ratatui"]
 categories = ["command-line-utilities"]
 
