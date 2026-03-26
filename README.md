@@ -3,8 +3,8 @@
 A terminal user interface for managing [LogMeIn Hamachi](https://vpn.net) VPN networks on Linux.
 
 ```
-┌ HamTUI ──────────────────────────────┐
-│ ● Online │ 25.12.34.56 │ 123-456-789 │
+┌ HamTUI ───────────────────────────────┐
+│ ● Online │ 25.12.34.56 │ 123-456-789  │
 │ ▸ alex            [Logout]     [Quit] │
 ├ Networks (2) ─────────────────────────┤
 │ ● GameNight [210-555-001]         2/3 │
